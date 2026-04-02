@@ -1,0 +1,102 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches:
+      - master
+      - prompts
+    paths:
+      - ".github/workflows/deploy-pages.yml"
+      - "content/prompts/**"
+      - "src/**"
+      - "package.json"
+      - "package-lock.json"
+      - "next.config.ts"
+      - "postcss.config.mjs"
+      - "tailwind.config.ts"
+      - "tsconfig.json"
+      - "eslint.config.mjs"
+      - ".stitch/DESIGN.md"
+      - "README.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout site source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+
+      - name: Check whether prompts branch exists
+        id: prompts_branch
+        run: |
+          if git ls-remote --exit-code --heads origin prompts >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Checkout prompts branch content
+        if: steps.prompts_branch.outputs.exists == 'true'
+        uses: actions/checkout@v4
+        with:
+          ref: prompts
+          path: prompt-content
+          sparse-checkout: |
+            content/prompts
+
+      - name: Sync prompt content
+        if: steps.prompts_branch.outputs.exists == 'true'
+        run: |
+          mkdir -p content/prompts
+          if [ -d prompt-content/content/prompts ]; then
+            rsync -a --delete prompt-content/content/prompts/ content/prompts/
+          fi
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build static site
+        env:
+          NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
+          NEXT_PUBLIC_GITHUB_REPOSITORY: ${{ github.repository }}
+          NEXT_PUBLIC_PROMPT_SOURCE_BRANCH: prompts
+        run: npm run build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,53 @@
+{
+  "name": "prompt",
+  "version": "1.0.0",
+  "private": true,
+  "description": "一个面向搜索、浏览和快速复制的 Prompt 浏览器。",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WeiJunn/prompt-hub.git"
+  },
+  "keywords": [
+    "nextjs",
+    "prompt",
+    "search"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/WeiJunn/prompt-hub/issues"
+  },
+  "homepage": "https://github.com/WeiJunn/prompt-hub#readme",
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "fuse.js": "^7.1.0",
+    "gray-matter": "^4.0.3",
+    "lucide-react": "^1.7.0",
+    "next": "^16.2.2",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "rehype-stringify": "^10.0.1",
+    "remark": "^15.0.1",
+    "remark-gfm": "^4.0.1",
+    "remark-rehype": "^11.1.2",
+    "tailwind-merge": "^3.5.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.19",
+    "@types/node": "^25.5.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "autoprefixer": "^10.4.27",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "^16.2.2",
+    "postcss": "^8.5.8",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply min-h-screen bg-background font-sans text-foreground antialiased;
+    background-image:
+      radial-gradient(circle at top, rgba(18, 52, 77, 0.08), transparent 32%),
+      linear-gradient(rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.92));
+  }
+
+  ::selection {
+    @apply bg-accent/30 text-foreground;
+  }
+
+  a {
+    @apply outline-none;
+  }
+}
+
+@layer components {
+  .page-shell {
+    @apply mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8;
+  }
+
+  .section-title {
+    @apply text-3xl font-semibold tracking-tight text-foreground;
+  }
+
+  .section-kicker {
+    @apply text-sm font-medium uppercase tracking-[0.18em] text-primary/70;
+  }
+}

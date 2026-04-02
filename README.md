@@ -1,18 +1,54 @@
-# Prompt 分类仓库
+# Prompt 浏览器仓库
 
-这个仓库用来整理和维护一批可直接复制使用的中文 prompt，并按领域分类存放。
+这个仓库现在同时承载两部分内容：
 
-## 当前分类
+- Prompt 浏览器前端项目
+- 可直接复制使用的中文 Prompt 内容
 
-### `求职/`
+站点目标很简单：找得到、看得懂、复制走。
+
+## 内容目录
+
+Prompt 内容统一放在 `content/prompts/` 下，当前已收录：
+
+### `content/prompts/求职/`
 求职相关 prompt，包括：
 - `岗位洞察prompt.md`
 - `简历优化prompt.md`
 - `面试准备prompt.md`
 
+## 本地开发
+
+```bash
+npm install
+npm run dev
+```
+
+## 静态发布
+
+项目使用 GitHub Actions 构建，并通过 GitHub Pages 发布。
+
+- 本地静态导出产物目录：`out/`
+- Next.js 中间构建目录：`.next/`
+- GitHub Actions 会上传 `out/` 作为 Pages artifact
+
+## 分支约定
+
+建议按下面的方式使用：
+
+- `master`：前端项目源码
+- `prompts`：Prompt 内容更新分支
+
+工作流会始终使用默认分支的项目代码来构建站点，并优先同步 `prompts` 分支中的 `content/prompts/` 内容。
+
+注意：
+
+- 如果你希望“更新 prompts 分支后自动发布”，那么 `prompts` 分支里也需要保留 `.github/workflows/` 文件，因为 GitHub 会在触发事件对应的分支上查找 workflow。
+- GitHub Pages 仓库设置里需要将 Source 设为 `GitHub Actions`。
+
 ## 使用方式
 
-1. 进入对应分类文件夹
+1. 进入对应分类目录
 2. 选择对应 prompt 文件
 3. 复制完整 prompt 到 AI 工具中
 4. 填入 JD、简历或补充背景
